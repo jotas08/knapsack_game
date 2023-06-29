@@ -38,10 +38,14 @@ if __name__ == "__main__":
     # my_direction = LEFT
 
     clock = pygame.time.Clock()
+    counter, text = 10, "10".rjust(25)
+    pygame.time.set_timer(pygame.USEREVENT, 1000)
+    font = pygame.font.SysFont("Consolas", 50)
+
     running = True
     while running:
-        # clock.tick(20)
-        screen.fill("black")
+        clock.tick(20)
+        screen.fill("purple")
 
         for box in boxes:
             pygame.draw.rect(screen, "yellow", box)
@@ -49,6 +53,12 @@ if __name__ == "__main__":
         for event in pygame.event.get():
             if event.type == QUIT:
                 running = False
+
+            if event.type == pygame.USEREVENT:
+                counter -= 1
+                text = str(counter).rjust(20) if counter > 0 else "boom!"
+                if counter == 0:
+                    running = False
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
@@ -64,19 +74,22 @@ if __name__ == "__main__":
                 if active_box != None:
                     boxes[active_box].move_ip(event.rel)
 
-            # if event.type == KEYDOWN:
-            #     if event.key == K_UP:
-            #         my_direction = UP
-            #     if event.key == K_DOWN:
-            #         my_direction = DOWN
-            #     if event.key == K_LEFT:
-            #         my_direction = LEFT
-            #     if event.key == K_RIGHT:
-            #         my_direction = RIGHT
-            # if event.type == MOUSEBUTTONDOWN:
-            #     if event.key
-
+        screen.blit(font.render(text, True, (0, 0, 0)), (32, 48))
         pygame.display.flip()
+        clock.tick(60)
+
+        # if event.type == KEYDOWN:
+        #     if event.key == K_UP:
+        #         my_direction = UP
+        #     if event.key == K_DOWN:
+        #         my_direction = DOWN
+        #     if event.key == K_LEFT:
+        #         my_direction = LEFT
+        #     if event.key == K_RIGHT:
+        #         my_direction = RIGHT
+        # if event.type == MOUSEBUTTONDOWN:
+        #     if event.key
+
         # if collision(obj[0], block_pos):
         #     block_pos = on_grid_random()
         #     obj.append((0,0))
@@ -101,6 +114,6 @@ if __name__ == "__main__":
 
         # for pos in obj:
         #     screen.blit(skin,pos)
-        # pygame.display.update()
+        pygame.display.update()
 
     pygame.quit()
