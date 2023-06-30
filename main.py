@@ -10,6 +10,18 @@ RIGHT = 1
 DOWN = 2
 LEFT = 3
 
+"""Dividir as partes do código main em classes, ui pra interface gráfica por exemplo, 
+usar o observer pra colocar para os eventos de caixa entra na mochila, mochila cheia, fim do tempo,
+pontuação total
+Deixa a main responsável apenas por desenhar os objetos e gerenciar
+o tempo do jogo (main loop e update)
+Talvez no fim tenha 4 classes: mochila, objetos, UI, Observer
+e a função main. 
+Talvez seja legal ter uma tela de inicio também
+
+Mochila responsável pela colisão ???? """
+
+
 if __name__ == "__main__":
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -17,6 +29,7 @@ if __name__ == "__main__":
 
     active_box = None
     boxes = []
+    
 
     for i in range(5):
         x = random.randint(50, 700)
@@ -25,6 +38,9 @@ if __name__ == "__main__":
         height = random.randint(35, 65)
         box = pygame.Rect(x, y, width, height)
         boxes.append(box)
+
+    
+    knacksack = pygame.Rect(0,300,250,250)
 
     # obj = [(200,200), (210,200), (220,200)]
 
@@ -47,6 +63,9 @@ if __name__ == "__main__":
         clock.tick(20)
         screen.fill("purple")
 
+        pygame.draw.rect(screen, "black",knacksack,
+                         border_top_right_radius=10,border_top_left_radius=10 ) 
+
         for box in boxes:
             pygame.draw.rect(screen, "yellow", box)
 
@@ -57,8 +76,8 @@ if __name__ == "__main__":
             if event.type == pygame.USEREVENT:
                 counter -= 1
                 text = str(counter).rjust(20) if counter > 0 else "boom!"
-                if counter == 0:
-                    running = False
+                #if counter == 0:
+                 #   running = False
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
