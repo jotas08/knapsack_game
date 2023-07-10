@@ -1,6 +1,7 @@
 import pygame, random
 from pygame.locals import *
 from colisao import collision, on_grid_random
+from mochila import Mochila
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
@@ -40,7 +41,7 @@ if __name__ == "__main__":
         boxes.append(box)
 
     
-    knacksack = pygame.Rect(0,300,250,250)
+    knacksack = Mochila(300,300,250,250,"white")
 
     # obj = [(200,200), (210,200), (220,200)]
 
@@ -63,8 +64,10 @@ if __name__ == "__main__":
         clock.tick(20)
         screen.fill("purple")
 
-        pygame.draw.rect(screen, "black",knacksack,
-                         border_top_right_radius=10,border_top_left_radius=10 ) 
+        Mochila.draw(knacksack,screen)
+
+       #pygame.draw.rect(screen, "black",knacksack,
+        #                border_top_right_radius=10,border_top_left_radius=10 ) */
 
         for box in boxes:
             pygame.draw.rect(screen, "yellow", box)
