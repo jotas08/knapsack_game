@@ -1,8 +1,8 @@
 import pygame
 from pygame.locals import *
+from Subject import *
 
-
-class Itens (Rect):
+class Itens (Rect, Subject):
 
     def __init__(self, x, y, width, height,color):
         super()
@@ -12,6 +12,8 @@ class Itens (Rect):
         self.height = height
         self.color = color
         self.dragging = False
+        _state = None
+        self.observers = []
      
 
 
@@ -37,4 +39,16 @@ class Itens (Rect):
         elif event.type == pygame.MOUSEBUTTONUP:
             if event.button == 1:
                 self.dragging = False
+
+
+    def add_event(self, observer):
+        self.observers.append(observer)
+    
+
+    def del_event(self, observer):
+        self.observers.remove(observer)
+
+    def noitfy(self):
+        for observer in self.observers:
+            observer.update()
 
