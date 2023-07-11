@@ -2,6 +2,8 @@ import pygame, random
 from pygame.locals import *
 from colisao import collision, on_grid_random
 from mochila import Mochila
+from itens import Itens
+import time
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
@@ -11,33 +13,24 @@ RIGHT = 1
 DOWN = 2
 LEFT = 3
 
-"""Dividir as partes do código main em classes, ui pra interface gráfica por exemplo, 
-usar o observer pra colocar para os eventos de caixa entra na mochila, mochila cheia, fim do tempo,
-pontuação total
-Deixa a main responsável apenas por desenhar os objetos e gerenciar
-o tempo do jogo (main loop e update)
-Talvez no fim tenha 4 classes: mochila, objetos, UI, Observer
-e a função main. 
-Talvez seja legal ter uma tela de inicio também
 
-Mochila responsável pela colisão ???? """
 
 
 if __name__ == "__main__":
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pygame.display.set_caption("KnapsackInventory")
-
+    num_itens = 15
     active_box = None
     boxes = []
     
 
-    for i in range(5):
+    for i in range(num_itens):
         x = random.randint(50, 700)
         y = random.randint(50, 500)
-        width = random.randint(35, 65)
-        height = random.randint(35, 65)
-        box = pygame.Rect(x, y, width, height)
+        width = random.randint(25, 65)
+        height = random.randint(15, 105)
+        box = Itens(x, y, width, height,"yellow")
         boxes.append(box)
 
     
@@ -55,7 +48,8 @@ if __name__ == "__main__":
     # my_direction = LEFT
 
     clock = pygame.time.Clock()
-    counter, text = 10, "10".rjust(25)
+    counter = 60
+    text = str(counter).center(25)
     pygame.time.set_timer(pygame.USEREVENT, 1000)
     font = pygame.font.SysFont("Consolas", 50)
 
@@ -66,27 +60,30 @@ if __name__ == "__main__":
 
         Mochila.draw(knacksack,screen)
 
-       #pygame.draw.rect(screen, "black",knacksack,
-        #                border_top_right_radius=10,border_top_left_radius=10 ) */
-
         for box in boxes:
-            pygame.draw.rect(screen, "yellow", box)
-
+            box.draw(screen)
+    
         for event in pygame.event.get():
             if event.type == QUIT:
                 running = False
 
             if event.type == pygame.USEREVENT:
                 counter -= 1
-                text = str(counter).rjust(20) if counter > 0 else "boom!"
-                #if counter == 0:
-                 #   running = False
+                text = str(counter).center(20) if counter > 0 else "boom!"
+                if text =='boom!':
+                    
+                    running = False
+                    
+            for box in boxes:
+                box.move_item(event)
+                box.update()   
 
-            if event.type == pygame.MOUSEBUTTONDOWN:
+         
+        """if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     for num, box in enumerate(boxes):
                         if box.collidepoint(event.pos):
-                            active_box = num
+                            active_box = num 
 
             if event.type == pygame.MOUSEBUTTONUP:
                 if event.button == 1:
@@ -94,7 +91,7 @@ if __name__ == "__main__":
 
             if event.type == pygame.MOUSEMOTION:
                 if active_box != None:
-                    boxes[active_box].move_ip(event.rel)
+                    boxes[active_box].move_ip(event.rel)"""
 
         screen.blit(font.render(text, True, (0, 0, 0)), (32, 48))
         pygame.display.flip()
