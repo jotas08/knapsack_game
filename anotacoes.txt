@@ -1,6 +1,0 @@
--> MOUSEBUTTONDOWN to check if object was clicked and set 
-drag = True (and remember offset between mouse position and rectangle top-left corner)
-
--> MOUSEBUTTONUP to set drag = False
-
--> MOUSEMOTION to move object when drag == True using mouse position and offset.
